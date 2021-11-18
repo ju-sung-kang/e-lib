@@ -1,0 +1,19 @@
+<h1>{{ book.name }}</h1>
+
+<div>
+    {{ book.description }}
+</div>
+
+<h5>{{ book.review_set|length }}개의 답변이 있습니다.</h5>
+<div>
+    <ul>
+        {% for book in book.review_set %}
+        <li>{{ book.content }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<form action="{{ url_for('review.create', book_id=book.id) }}" method="post">
+    <textarea name="content" id="content" rows="15"></textarea>
+    <input type="submit" value="작성하기">
+</form>

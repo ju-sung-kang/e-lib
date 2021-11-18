@@ -1,0 +1,9 @@
+{% if book_list %}
+<ul>
+    {% for book in book %}
+    <li><a href="{{ url_for('book.detail', book_id=book.id) }}">{{ book.title }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>대출 가능한 책이 없습니다.</p>
+{% endif %}
