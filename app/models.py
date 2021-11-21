@@ -19,7 +19,7 @@ class Book(db.Model):
     pages = db.Column(db.Integer, nullable=False)
     description = db.Column(db.Text(), nullable=False)
     link = db.Column(db.Text(), nullable=False)
-    star_rate = db.Column(db.String)
+    star_rate = db.Column(db.Integer, nullable=False)
 
 
 class Rent(db.Model):
