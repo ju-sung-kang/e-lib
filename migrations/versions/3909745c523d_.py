@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 364353995ed7
+Revision ID: 3909745c523d
 Revises: 
-Create Date: 2021-11-21 14:18:10.339827
+Create Date: 2021-11-22 14:07:16.170034
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '364353995ed7'
+revision = '3909745c523d'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,7 +24,7 @@ def upgrade():
     sa.Column('title', sa.String(length=200), nullable=False),
     sa.Column('author', sa.String(length=150), nullable=False),
     sa.Column('publisher', sa.String(length=100), nullable=False),
-    sa.Column('publication_date', sa.Date(), nullable=False),
+    sa.Column('publication_date', sa.String(length=10), nullable=False),
     sa.Column('pages', sa.Integer(), nullable=False),
     sa.Column('description', sa.Text(), nullable=False),
     sa.Column('link', sa.Text(), nullable=False),
@@ -44,8 +44,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('book_id', sa.Integer(), nullable=False),
-    sa.Column('start_date', sa.Date(), nullable=False),
-    sa.Column('end_date', sa.Date(), nullable=True),
+    sa.Column('start_date', sa.DateTime(), nullable=False),
+    sa.Column('end_date', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['book_id'], ['book.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
@@ -56,7 +56,7 @@ def upgrade():
     sa.Column('book_id', sa.Integer(), nullable=True),
     sa.Column('content', sa.Text(), nullable=False),
     sa.Column('star_rate', sa.Integer(), nullable=False),
-    sa.Column('create_date', sa.Date(), nullable=False),
+    sa.Column('create_date', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['book_id'], ['book.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')

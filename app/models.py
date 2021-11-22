@@ -15,7 +15,7 @@ class Book(db.Model):
     title = db.Column(db.String(200), nullable=False)
     author = db.Column(db.String(150), nullable=False)
     publisher = db.Column(db.String(100), nullable=False)
-    publication_date = db.Column(db.Date(), nullable=False)
+    publication_date = db.Column(db.String(10), nullable=False)
     pages = db.Column(db.Integer, nullable=False)
     description = db.Column(db.Text(), nullable=False)
     link = db.Column(db.Text(), nullable=False)
@@ -40,8 +40,8 @@ class Rent(db.Model):
     ),
         nullable=False)
 
-    start_date = db.Column(db.Date(), nullable=False)
-    end_date = db.Column(db.Date())
+    start_date = db.Column(db.DateTime(), nullable=False)
+    end_date = db.Column(db.DateTime())
 
 
 class Review(db.Model):
@@ -65,4 +65,4 @@ class Review(db.Model):
 
     content = db.Column(db.Text(), nullable=False)
     star_rate = db.Column(db.Integer, nullable=False)
-    create_date = db.Column(db.Date(), nullable=False)
+    create_date = db.Column(db.DateTime(), nullable=False)
