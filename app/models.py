@@ -19,6 +19,7 @@ class Book(db.Model):
     pages = db.Column(db.Integer, nullable=False)
     description = db.Column(db.Text(), nullable=False)
     link = db.Column(db.Text(), nullable=False)
+    stock = db.Column(db.Integer, nullable=False)
     star_rate = db.Column(db.Integer, nullable=False)
 
 

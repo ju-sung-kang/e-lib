@@ -1,9 +1,80 @@
-{% if book_list %}
-<ul>
-    {% for book in book_list %}
-    <li><a href="{{ url_for('book.detail', book_id=book.id) }}">{{ book.title }}</a></li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>대출 가능한 책이 없습니다.</p>
-{% endif %}
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    {% if book_list %}
+    <div class="row row-cols-1 row-cols-md-4 my-5">
+        {% for book in book_list.items %}
+        <div class="col mt-4">
+            <div class="card h-100 m-4" style="width: 17rem;">
+                <div class="d-flex justify-content-center align-items-center" style="width: 17rem; height: 17rem;">
+                    <a href="{{ url_for('book.detail', book_id=book.id) }}">
+                        <img src="{{ url_for('static', filename='/book_img/%d.jpg' % (book.id)) }}" class="card-img-top"
+                            style="width: 15rem; height: 15rem; border: thick double lightgray;" alt="...">
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    <a href="{{ url_for('book.detail', book_id=book.id) }}">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                    </a>
+                    <p class="card-text">별점</p>
+                    <p class="card-text">재고: 권</p>
+                </div>
+                <div class="card-footer d-flex justify-content-center">
+                    <form action="{{ url_for('book._list') }}" method="post">
+                        <input type="hidden" name="book_id" value="{{ book.id }}">
+                        <input type="submit" value="대여하기" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>대출 가능한 책이 없습니다.</p>
+    {% endif %}
+
+    <!-- 페이징처리 시작 -->
+    <ul class="pagination justify-content-center">
+        <!-- 이전페이지 -->
+        {% if book_list.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ book_list.prev_num }}">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        {% for page_num in book_list.iter_pages() %}
+        {% if page_num %}
+        {% if page_num != book_list.page %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+        </li>
+        {% else %}
+        <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#">{{ page_num }}</a>
+        </li>
+        {% endif %}
+        {% else %}
+        <li class="disabled">
+            <a class="page-link" href="#">...</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if book_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ book_list.next_num }}">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- 페이징처리 끝 -->
+</div>
+{% endblock %}
