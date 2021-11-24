@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="row w-50 h-75 d-flex justify-content-center">
+        <div class="col-md-12 text-center" style="height: 3rem; margin-top: 3rem;"><img
+                src=" {{ url_for( 'static', filename='book-half.svg' ) }} " alt="" style="width: 4rem; height: 4rem;">
+        </div>
+        <div class="col-md-12 text-center" style="height: 2rem; font-size: 1.2rem; margin-top: 1.5rem;">E-Lib에 로그인하기
+        </div>
+        <div class="card w-75 d-flex justify-content-center align-items-center" style="height: 18rem;">
+            <div class="col">
+                <form class="row g-3 d-flex justify-content-center h-100">
+                    <div class="col-md-9 mt-4">
+                        <label for="inputemail" class="form-label">아이디</label>
+                        <input type="email" name="input_email" class="form-control" id="inputemail">
+                    </div>
+                    <div class="col-md-9 mb-3">
+                        <label for="inputpassword" class="form-label">비밀번호</label>
+                        <input type="password" name="input_password" class="form-control" id="inputpassword">
+                    </div>
+                    <div class="col-9 mb-3">
+                        <button type="submit" class="btn btn-primary w-100">로그인</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

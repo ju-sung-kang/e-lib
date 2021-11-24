@@ -18,11 +18,11 @@
                     <a href="{{ url_for('book.detail', book_id=book.id) }}">
                         <h5 class="card-title">{{ book.title }}</h5>
                     </a>
-                    <p class="card-text">별점</p>
-                    <p class="card-text">재고: 권</p>
+                    <p class="card-text">{{ book.star_rate }}점</p>
+                    <p class="card-text">재고: {{ book.stock }}권</p>
                 </div>
                 <div class="card-footer d-flex justify-content-center">
-                    <form action="{{ url_for('book._list') }}" method="post">
+                    <form action="{{ url_for( 'main.index' ) }}" method="post">
                         <input type="hidden" name="book_id" value="{{ book.id }}">
                         <input type="submit" value="대여하기" class="btn btn-primary">
                     </form>

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-2" style="margin: 8rem 0rem;">
+        <div class="col">
+            <div class="card" style="width: 28rem; margin-top: 2rem;">
+                <div class="card-body">
+                    <span class="badge rounded-pill bg-danger text-light">&nbsp;아이디&nbsp;</span>
+                    <span>,&nbsp;</span>
+                    <span class="badge rounded-pill bg-primary text-light">&nbsp;비밀번호&nbsp;</span>
+                    <span class="text-secondary">&nbsp;생성규칙</span>
+                    <br /><br /><br />
+                    <span class="badge rounded-pill bg-danger text-light">&nbsp;1. 아이디 생성규칙&nbsp;</span>
+                    <br />
+                    <div class="alert alert-light" role="alert">
+                        아이디는 이메일 형식을 지켜 작성해주세요!
+                    </div>
+                    <span class="badge rounded-pill bg-primary text-light">&nbsp;2. 비밀번호 생성규칙&nbsp;</span>
+                    <br />
+                    <div class="alert alert-light" role="alert">
+                        비밀번호는 아래의 두가지 형식 중 하나를 따라서 작성해주세요!
+                    </div>
+                    <ul>
+                        <li>
+                            <span class="badge rounded-pill bg-primary text-light">&nbsp;case 1&nbsp;</span>
+                            <div class="alert alert-light" role="alert">
+                                문자, 숫자, 특수문자를 모두 포함하고 8글자 이상
+                            </div>
+                        </li>
+                        <li>
+                            <span class="badge rounded-pill bg-primary text-light" style>&nbsp;case 2&nbsp;</span>
+                            <div class="alert alert-light" role="alert">
+                                문자, 숫자, 특수문자 중 2가지를 포함하고 10글자 이상
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card" style="border: none;">
+                <div class="row">
+                    <div class="col-md-12 text-center" style="height: 3rem; margin-top: 3rem;"><img
+                            src=" {{ url_for( 'static', filename='book-half.svg' ) }} " alt=""
+                            style="width: 4rem; height: 4rem;">
+                    </div>
+                    <div class="col-md-12 text-center" style="height: 2rem; font-size: 1.2rem; margin-top: 1.5rem;">
+                        E-Lib에
+                        회원가입하기
+                    </div>
+                </div>
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="InputEmail" class="form-label">아이디(E-mail)</label>
+                        <input type="email" name="input_email" class="form-control" id="InputEmail"
+                            placeholder="example@gmail.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="InputUserName" class="form-label">이름</label>
+                        <input type="name" name="input_name" class="form-control" id="InputUserName" placeholder="이름">
+                    </div>
+                    <div class="mb-3">
+                        <label for="InputPassword1" class="form-label">비밀번호</label>
+                        <input type="password" name="input_password1" class="form-control" id="InputPassword1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="InputPassword2" class="form-label">비밀번호 확인</label>
+                        <input type="password" name="input_password2" class="form-control" id="InputPassword2">
+                    </div>
+                    <div class="text-center">
+                        <input type="submit" class="btn btn-primary" value="회원가입">
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

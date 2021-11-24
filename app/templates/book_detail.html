@@ -61,6 +61,7 @@
                 <div class="card-header">
                     <div>review.user.username</div>
                     <div>{{ review.star_rate }}</div>
+                    <div>{{ review.create_date|datetime }}</div>
                 </div>
                 <div class="card-body">{{ review.content }}</div>
             </div>

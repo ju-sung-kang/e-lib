@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, url_for
 from werkzeug.utils import redirect
-from flask_login import current_user
+from flask_login import login_required, login_user, current_user, logout_user
 from app.models import Book, Rent
 from app import db
 from datetime import datetime
