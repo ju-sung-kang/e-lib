@@ -16,10 +16,10 @@
 </head>
 
 <body>
+
     <div class="container w-100">
-        {% include 'navigation_bar.html' %}
-        <!-- error message 모달 -->
         {% include 'flash_modal.html' %}
+        {% include 'navigation_bar.html' %}
 
         {% block content %}
         {% endblock %}
@@ -31,6 +31,16 @@
     <script src="{{ url_for('static', filename='jquery-3.6.0.js') }}"></script>
     <!-- Bootstrap JS -->
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            var messages = "{{ get_flashed_messages() }}";
+
+            if (typeof messages != 'undefined' && messages != '[]') {
+                $("#infoModal").modal();
+            };
+        });
+    </script>
 
 </body>
 

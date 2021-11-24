@@ -39,8 +39,8 @@ def signup():
             return render_template('sign_up.html')
 
         # 비밀번호 미입력, 혹은 불일치 방지
-        if not input_password1 or not input_password2:
-            flash('비밀번호 입력과 비밀번호 확인을 진행해주세요.')
+        if not input_password1 and not input_password2:
+            flash('비밀번호를 입력해주세요.')
             return render_template('sign_up.html')
         elif input_password1 != input_password2:
             flash('비밀번호가 일치하지 않습니다.')
