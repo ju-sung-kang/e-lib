@@ -23,7 +23,6 @@
 
         {% block content %}
         {% endblock %}
-
     </div>
     {% include 'footer.html' %}
 
@@ -34,10 +33,10 @@
 
     <script>
         $(document).ready(function () {
-            var messages = "{{ get_flashed_messages() }}";
+            const messages = "{{ get_flashed_messages() }}";
 
-            if (typeof messages != 'undefined' && messages != '[]') {
-                $("#infoModal").modal();
+            if (messages !== undefined && messages !== null && messages != '[]') {
+                $("#errorModal").modal('show');
             };
         });
     </script>

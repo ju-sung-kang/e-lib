@@ -1,4 +1,4 @@
-from sqlalchemy.orm import backref
+from sqlalchemy.orm import relationship, backref
 
 from app import db
 
@@ -8,6 +8,21 @@ class User(db.Model):
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.email
 
 
 class Book(db.Model):
@@ -41,6 +56,8 @@ class Rent(db.Model):
         ondelete='CASCADE'
     ),
         nullable=False)
+
+    book = db.relationship('Book')
 
     start_date = db.Column(db.DateTime(), nullable=False)
     end_date = db.Column(db.DateTime())

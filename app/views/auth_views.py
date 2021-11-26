@@ -24,26 +24,26 @@ def signup():
 
         # 이메일 검증
         if not input_email:
-            flash('Email을 입력해주세요.')
+            flash('Email을 입력해주세요.', 'error')
             return render_template('sign_up.html')
         else:
             try:
                 validate_email(input_email)
             except EmailNotValidError as e:
-                flash('올바른 Email 형식이 아닙니다.')
+                flash('올바른 Email 형식이 아닙니다.', 'error')
                 return render_template('sign_up.html')
 
         # 이름 미입력 방지
         if not input_name:
-            flash('이름을 입력해주세요.')
+            flash('이름을 입력해주세요.', 'error')
             return render_template('sign_up.html')
 
         # 비밀번호 미입력, 혹은 불일치 방지
         if not input_password1 and not input_password2:
-            flash('비밀번호를 입력해주세요.')
+            flash('비밀번호를 입력해주세요.', 'error')
             return render_template('sign_up.html')
         elif input_password1 != input_password2:
-            flash('비밀번호가 일치하지 않습니다.')
+            flash('비밀번호가 일치하지 않습니다.', 'error')
             return render_template('sign_up.html')
 
         # 비밀번호 개인정보 보호기준 검증
@@ -69,19 +69,20 @@ def signup():
             if zero_cnt == 1 and len(input_password1) >= 10:
                 pass
             else:
-                flash('비밀번호 생성규칙을 확인해주세요!')
+                flash('비밀번호 생성규칙을 확인해주세요!', 'error')
                 return render_template('sign_up.html')
 
         user = User.query.filter_by(email=input_email).first()
         if user:
-            flash('이미 가입된 email입니다.')
+            flash('이미 가입된 email입니다.', 'error')
             return render_template('sign_up.html')
 
         new_user = User(username=input_name, password=generate_password_hash(
             input_password1, method='sha256'), email=input_email)
         db.session.add(new_user)
         db.session.commit()
-        redirect(url_for('signin'))
+        flash('회원가입 성공! 환영합니다~', 'success')
+        return redirect(url_for('auth.signin'))
 
     else:  # GET
         return render_template('sign_up.html')
@@ -94,19 +95,20 @@ def signin():
         input_password = request.form['input_password']
 
         if not input_email:
-            flash('아이디를 입력해주세요.')
+            flash('아이디를 입력해주세요.', 'error')
             return render_template('sign_in.html')
 
         if not input_password:
-            flash('비밀번호를 입력해주세요.')
+            flash('비밀번호를 입력해주세요.', 'error')
             return render_template('sign_in.html')
 
         user = User.query.filter_by(email=input_email).first()
         if not user or not check_password_hash(user.password, input_password):
-            flash('로그인 실패ㅠㅠ.')
+            flash('로그인 실패ㅠㅠ.', 'error')
+            return render_template('sign_in.html')
         else:
             login_user(user)
-            return redirect('/')
+            return redirect(url_for('main.index'))
 
     else:  # GET
         return render_template('sign_in.html')
@@ -116,4 +118,4 @@ def signin():
 @login_required
 def logout():
     logout_user()
-    return redirect('/')
+    return redirect(url_for('main.index'))

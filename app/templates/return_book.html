@@ -2,45 +2,37 @@
 
 {% block content %}
 <div class="container">
-    {% if book_list %}
+    {% if rent_list > 0 %}
     <div class="row row-cols-1 row-cols-md-4 my-5">
-        {% for book in book_list.items %}
+        {% for rent in rent_list %}
         <div class="col mt-4">
             <div class="card h-100 m-4" style="width: 17rem;">
                 <div class="d-flex justify-content-center align-items-center" style="width: 17rem; height: 17rem;">
-                    <a href="{{ url_for('book.detail', book_id=book.id) }}">
-                        <img src="{{ url_for( 'static', filename='/book_img/{book_id_number}.jpg'.format(book_id_number=book.id) ) }}"
+                    <a href="{{ url_for('book.detail', book_id=rent.book.id) }}">
+                        <img src="{{ url_for( 'static', filename='/book_img/{book_id_number}.jpg'.format(book_id_number=rent.book.id) ) }}"
                             class="card-img-top" style="width: 15rem; height: 15rem; border: thick double lightgray;"
                             alt="...">
                     </a>
                 </div>
 
                 <div class="card-body">
-                    <a href="{{ url_for('book.detail', book_id=book.id) }}">
-                        <h5 class="card-title">{{ book.title }}</h5>
+                    <a href="{{ url_for('book.detail', book_id=rent.book.id) }}">
+                        <h5 class="card-title">{{ rent.book.title }}</h5>
                     </a>
-                    <p class="card-text">{{ book.star_rate }}점</p>
-                    <p class="card-text">재고: {{ book.stock }}권</p>
+                    <p class="card-text">대여 시작: {{ rent.start_date|datetime }}</p>
                 </div>
                 <div class="card-footer d-flex justify-content-center">
-                    {% if book.stock > 0 %}
-                    <form action="{{ url_for( 'rent.get_book' ) }}" method="post">
+                    <form action="{{ url_for( 'rent.return_book' ) }}" method="post">
                         <input type="hidden" name="book_id" value="{{ book.id }}">
-                        <input type="submit" value="대여하기" class="btn btn-primary">
+                        <input type="submit" value="반납하기" class="btn btn-primary">
                     </form>
-                    {% else %}
-                    <form action="{{ url_for( 'rent.get_book' ) }}" method="post">
-                        <input type="hidden" name="book_id" value="{{ book.id }}">
-                        <input type="submit" value="대여하기" class="btn btn-primary" diabled>
-                    </form>
-                    {% endif %}
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
     {% else %}
-    <p>대출 가능한 책이 없습니다.</p>
+    <p>대여중인 책이 없습니다.</p>
     {% endif %}
 
     <!-- 페이징처리 시작 -->
@@ -48,7 +40,7 @@
         <!-- 이전페이지 -->
         {% if book_list.has_prev %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ book_list.prev_num }}">이전</a>
+            <a class="page-link" href="?page={{ records.prev_num }}">이전</a>
         </li>
         {% else %}
         <li class="page-item disabled">
@@ -75,7 +67,7 @@
         <!-- 다음페이지 -->
         {% if book_list.has_next %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ book_list.next_num }}">다음</a>
+            <a class="page-link" href="?page={{ records.next_num }}">다음</a>
         </li>
         {% else %}
         <li class="page-item disabled">
