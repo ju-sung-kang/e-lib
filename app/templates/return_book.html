@@ -2,9 +2,9 @@
 
 {% block content %}
 <div class="container">
-    {% if rent_list > 0 %}
+    {% if rent_list %}
     <div class="row row-cols-1 row-cols-md-4 my-5">
-        {% for rent in rent_list %}
+        {% for rent in rent_list.items %}
         <div class="col mt-4">
             <div class="card h-100 m-4" style="width: 17rem;">
                 <div class="d-flex justify-content-center align-items-center" style="width: 17rem; height: 17rem;">
@@ -19,11 +19,12 @@
                     <a href="{{ url_for('book.detail', book_id=rent.book.id) }}">
                         <h5 class="card-title">{{ rent.book.title }}</h5>
                     </a>
-                    <p class="card-text">대여 시작: {{ rent.start_date|datetime }}</p>
+                    <p class="card-text">대여: {{ rent.start_date|datetime }}</p>
                 </div>
                 <div class="card-footer d-flex justify-content-center">
                     <form action="{{ url_for( 'rent.return_book' ) }}" method="post">
-                        <input type="hidden" name="book_id" value="{{ book.id }}">
+                        <input type="hidden" name="book_id" value="{{ rent.book.id }}">
+                        <input type="hidden" name="rent_id" value="{{ rent.id }}">
                         <input type="submit" value="반납하기" class="btn btn-primary">
                     </form>
                 </div>
@@ -38,18 +39,18 @@
     <!-- 페이징처리 시작 -->
     <ul class="pagination justify-content-center">
         <!-- 이전페이지 -->
-        {% if book_list.has_prev %}
+        {% if rent_list.has_prev %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ records.prev_num }}">이전</a>
+            <a class="page-link" href="?page={{ rent_list.prev_num }}">이전</a>
         </li>
         {% else %}
         <li class="page-item disabled">
             <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
         </li>
         {% endif %}
-        {% for page_num in book_list.iter_pages() %}
+        {% for page_num in rent_list.iter_pages() %}
         {% if page_num %}
-        {% if page_num != book_list.page %}
+        {% if page_num != rent_list.page %}
         <li class="page-item">
             <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
         </li>
@@ -65,9 +66,9 @@
         {% endif %}
         {% endfor %}
         <!-- 다음페이지 -->
-        {% if book_list.has_next %}
+        {% if rent_list.has_next %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ records.next_num }}">다음</a>
+            <a class="page-link" href="?page={{ rent_list.next_num }}">다음</a>
         </li>
         {% else %}
         <li class="page-item disabled">

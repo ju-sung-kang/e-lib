@@ -17,7 +17,7 @@ def create_app():
 
     # login manage
     login_manager.init_app(app)
-    login_manager.login_view = "auth.login"
+    login_manager.login_view = "auth.signin"
     login_manager.login_message = u"로그인이 필요합니다."
 
     # ORM

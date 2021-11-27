@@ -36,7 +36,7 @@ class Book(db.Model):
     description = db.Column(db.Text(), nullable=False)
     link = db.Column(db.Text(), nullable=False)
     stock = db.Column(db.Integer, nullable=False)
-    star_rate = db.Column(db.Integer, nullable=False)
+    star_rate = db.Column(db.Float, nullable=False)
 
 
 class Rent(db.Model):
@@ -71,13 +71,12 @@ class Review(db.Model):
         ondelete='CASCADE'
     ),
         nullable=False)
-    user = db.relationship('User', backref=db.backref(
-        'review_set',
-        cascade='all, delete-orphan'))
 
     book_id = db.Column(db.Integer, db.ForeignKey(
         'book.id',
-        ondelete='CASCADE'))
+        ondelete='CASCADE'
+    ),
+        nullable=False)
     book = db.relationship('Book', backref=db.backref(
         'review_set',
         cascade='all, delete-orphan'))

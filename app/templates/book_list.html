@@ -17,10 +17,33 @@
 
                 <div class="card-body">
                     <a href="{{ url_for('book.detail', book_id=book.id) }}">
-                        <h5 class="card-title">{{ book.title }}</h5>
+                        <h5 class="card-title" style="margin-bottom: 1rem;">{{ book.title }}</h5>
                     </a>
-                    <p class="card-text">{{ book.star_rate }}점</p>
-                    <p class="card-text">재고: {{ book.stock }}권</p>
+                    <div style="position: absolute; bottom: 4rem; margin-bottom: 1rem;">
+                        <div class="d-flex flex-column">
+                            <div class="card w-100" style="border:none;">
+                                <p class="card-text">
+                                    <span class="badge bg-light text-dark">
+                                        &nbsp;책 평점&nbsp;:
+                                    </span>
+                                    <span class="badge bg-primary text-light">
+                                        &nbsp;{{ book.star_rate }}&nbsp;
+                                    </span>&nbsp;/&nbsp;5
+                                </p>
+                            </div>
+                            <div class="card w-100" style="border:none;">
+                                <p class="card-text">
+                                    <span class="badge bg-light text-dark">
+                                        &nbsp;책 재고&nbsp;:
+                                    </span>
+                                    <span class="badge bg-light text-dark">
+                                        &nbsp;{{ book.stock }}권&nbsp;
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="card-footer d-flex justify-content-center">
                     {% if book.stock > 0 %}

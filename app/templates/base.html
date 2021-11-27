@@ -12,7 +12,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-    <title>엘리스도서관</title>
+    <title>도서관</title>
 </head>
 
 <body>
@@ -31,6 +31,7 @@
     <!-- Bootstrap JS -->
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
 
+    <!-- Modal -->
     <script>
         $(document).ready(function () {
             const messages = "{{ get_flashed_messages() }}";
@@ -40,6 +41,10 @@
             };
         });
     </script>
+
+    <!-- additional script tags-->
+    {% block script %}
+    {% endblock %}
 
 </body>
 

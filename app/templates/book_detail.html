@@ -1,29 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
+<div class="container" style="margin-top: 6rem;">
     <div class="card mt-3">
         <!-- 상단부 : 이미지, 책 정보 -->
         <div class="card-header">책 정보</div>
-        <div class="row no-gutters" style="height: 23.5rem;">
-            <div class="col-md-4 h-100" style="border: thick double lightgray;">
+        <div class="row g-0" style="height: 23.5rem;">
+            <div class="col-md-4 h-100">
                 <img src="{{ url_for( 'static', filename='/book_img/{book_id_number}.jpg'.format(book_id_number=book.id) ) }}"
-                    class="rounded-start" style="width: 100%; height: 100%; object-fit: fill;" alt="...">
+                    style="width: 100%; height: 100%; object-fit: fill; border: thick double lightgray;" alt="...">
             </div>
             <div class="col-md-2 h-100">
-                <div class="card rounded-0 h-100 bg-light" style="border: none; justify-content: center;">
-                    <ul class="list-group list-group-flush rounded-0">
-                        <li class="list-group-item" style="border-right: 1px solid lightgray;">제목</li>
-                        <li class="list-group-item" style="border-right: 1px solid lightgray;">출판사</li>
-                        <li class="list-group-item" style="border-right: 1px solid lightgray;">저자</li>
-                        <li class="list-group-item" style="border-right: 1px solid lightgray;">출간일</li>
-                        <li class="list-group-item" style="border-right: 1px solid lightgray;">페이지 수</li>
-                        <li class="list-group-item" style="border-right: 1px solid lightgray;">ISBN</li>
-                        <li class="list-group-item" style="border-right: 1px solid lightgray;">평점</li>
+                <div class="h-100 bg-light" style="border: none;">
+                    <ul class="list-group list-group-flush rounded-0" style="border-right: 1px solid lightgray;">
+                        <li class="list-group-item">제목</li>
+                        <li class="list-group-item">출판사</li>
+                        <li class="list-group-item">저자</li>
+                        <li class="list-group-item">출간일</li>
+                        <li class="list-group-item">페이지 수</li>
+                        <li class="list-group-item">ISBN</li>
+                        <li class="list-group-item">재고</li>
+                        <li class="list-group-item">평점</li>
                     </ul>
                 </div>
             </div>
             <div class="col-md-6 h-100">
-                <div class="card rounded-0 h-100 bg-light" style="border: none; justify-content: center;">
+                <div class="h-100 bg-light" style="border: none;">
                     <ul class="list-group list-group-flush rounded-0">
                         <li class="list-group-item">{{ book.title }}</li>
                         <li class="list-group-item">{{ book.publisher }}</li>
@@ -31,13 +32,15 @@
                         <li class="list-group-item">{{ book.publication_date }}</li>
                         <li class="list-group-item">{{ book.pages }}</li>
                         <li class="list-group-item">{{ book.isbn }}</li>
-                        <li class="list-group-item">{{ book.star_rate }}</li>
+                        <li class="list-group-item">{{ book.stock }}</li>
+                        <li class="list-group-item"><span class="badge bg-primary">&nbsp;{{ book.star_rate
+                                }}&nbsp;</span>&nbsp;/&nbsp;5</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card mt-3">
+    <div class="card mt-4">
         <!-- 중단부 : 책소개, 구매링크 -->
         <div class="card-header">책 소개</div>
         <div class="card-body">
@@ -45,23 +48,28 @@
             <a href="{{ book.link }}" class="card-link">구매링크 바로가기</a>
         </div>
     </div>
-    <div class="card mt-3">
+    <div class="card my-4">
         <!-- 하단부 : 리뷰 -->
         <div class="card-header">리뷰 {{ book.review_set|length }}개</div>
         <div class="card-body">
             {% if book.review_set|length == 0 %}
-            <div class="card text-center">
+            <div class="card text-center" style="border: none;">
                 <div class="card-body">
-                    <h5 class="card-title">현재 리뷰가 없습니다. "{{ book.title }}"의 첫번째 리뷰를 남겨주세요!</h5>
+                    <h5 class=" card-title">현재 리뷰가 없습니다. "{{ book.title }}"의 첫번째 리뷰를 남겨주세요!</h5>
                 </div>
             </div>
             {% else %}
             {% for review in book.review_set %}
             <div class="card mt-3">
                 <div class="card-header">
-                    <div>review.user.username</div>
-                    <div>{{ review.star_rate }}</div>
-                    <div>{{ review.create_date|datetime }}</div>
+                    <div><span class="badge text-dark">&nbsp;점수 평가:&nbsp;<span
+                                class="badge bg-primary text-light">&nbsp;{{
+                                review.star_rate }}&nbsp;</span>
+                            / 5&nbsp;</span>
+                    </div>
+                    <div><span class="badge bg-light text-dark">&nbsp;작성일:&nbsp; {{ review.create_date|datetime
+                            }}&nbsp;</span>
+                    </div>
                 </div>
                 <div class="card-body">{{ review.content }}</div>
             </div>
@@ -69,12 +77,95 @@
             {% endif %}
         </div>
     </div>
-    <form action="{{ url_for('review.create', book_id=book.id) }}" method="post" class="my-3">
-        <!-- 하단부 : 리뷰 작성 폼 -->
-        <div class="form-group">
-            <textarea name="content" id="content" class="form-control" rows="10"></textarea>
-        </div>
-        <input type="submit" value="리뷰등록" class="btn btn-primary">
-    </form>
+    {% if current_user.is_authenticated %}
+    <div class="card my-4">
+        <div class="card-header">리뷰 작성</div>
+
+        <form action="{{ url_for('review.create', book_id=book.id) }}" method="post" class="my-3">
+            <!-- 하단부 : 리뷰 작성 폼 -->
+            <div class="form-group text-center">
+                <div><span class="badge bg-light text-dark">&nbsp;평점 매기기도 필수로 진행해주세요!&nbsp;</span></div>
+                <div class="star-rating" style="margin: 2rem 0rem;">
+                    <input type="radio" id="1-stars" style="width: 0px;" name="rating" value="1" />
+                    <label id="label1" for="1-stars" class="star"
+                        style="font-size: 3rem; cursor: pointer; color: #d3d3d3;"><i id="emo1"
+                            class="bi bi-emoji-angry"></i></label>
+
+                    <input type="radio" id="2-stars" style="width: 0px;" name="rating" value="2" />
+                    <label id="label2" for="2-stars" class="star"
+                        style="font-size: 3rem; cursor: pointer; color: #d3d3d3; margin-left:2rem;"><i id="emo2"
+                            class="bi bi-emoji-frown"></i></label>
+
+                    <input type="radio" id="3-stars" style="width: 0px;" name="rating" value="3" />
+                    <label id="label3" for="3-stars" class="star"
+                        style="font-size: 3rem; cursor: pointer; color: #d3d3d3; margin-left:2rem;"><i id="emo3"
+                            class="bi bi-emoji-neutral"></i></label>
+
+                    <input type="radio" id="4-stars" style="width: 0px;" name="rating" value="4" />
+                    <label id="label4" for="4-stars" class="star"
+                        style="font-size: 3rem; cursor: pointer; color: #d3d3d3; margin-left:2rem;"><i id="emo4"
+                            class="bi bi-emoji-smile"></i></label>
+
+                    <input type="radio" id="5-stars" style="width: 0px;" name="rating" value="5">
+                    <label id="label5" for="5-stars" class="star"
+                        style="font-size: 3rem; cursor: pointer; color: #d3d3d3; margin-left:2rem;"><i id="emo5"
+                            class="bi bi-emoji-heart-eyes"></i></label>
+                </div>
+                <div style="margin: 2rem 0rem;">
+                    <label id="1-et" class="emotionText" style="display: none;"><span class="badge bg-danger text-light"
+                            style="font-size: 1.5rem;">&nbsp;화나요! 1점
+                            ㅡㅡ&nbsp;</span></label>
+                    <label id="2-et" class="emotionText" style="display: none;"><span
+                            class="badge bg-warning text-light" style="font-size: 1.5rem;">&nbsp;별로에요..
+                            2점&nbsp;</span></label>
+                    <label id="3-et" class="emotionText" style="display: none;"><span
+                            class="badge bg-secondary text-light" style="font-size: 1.5rem;">&nbsp;보통이에요
+                            3점&nbsp;</span></label>
+                    <label id="4-et" class="emotionText" style="display: none;"><span
+                            class="badge bg-primary text-light" style="font-size: 1.5rem;">&nbsp;좋아요~
+                            4점&nbsp;</span></label>
+                    <label id="5-et" class="emotionText" style="display: none;"><span
+                            class="badge bg-success text-light" style="font-size: 1.5rem;">&nbsp;최고에요!!
+                            5점&nbsp;</span></label>
+                </div>
+                <textarea name="content" id="content" class="form-control" rows="10"
+                    style="width: 84%; margin-left: 8%;"></textarea>
+            </div>
+            <div class="text-center mt-3">
+                <input type="submit" value="리뷰등록" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+    {% endif %}
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        $('.star').hover(function () {
+            $(this).css("color", "black");
+        }, function () {
+            if ($('input:radio[name="rating"]').is(":checked")) {
+                if ($('input[name="rating"]:checked').val() != $("#" + $(this).attr("for")).val()) {
+                    $(this).css("color", "#d3d3d3");
+                }
+            }
+            else {
+                $(this).css("color", "#d3d3d3");
+            }
+        });
+
+        $(".star").click(function (e) {
+            e.preventDefault();
+            if ($('input:radio[name="rating"]').is(":checked")) {
+                $("#label" + $('input[name="rating"]:checked').val()).css("color", "#d3d3d3");
+                $("#" + $('input[name="rating"]:checked').val() + "-et").hide();
+            }
+            $(this).css("color", "black")
+            $("#" + $(this).attr("for")).click().change();
+            $("#" + $('input[name="rating"]:checked').val() + "-et").show();
+        });
+    });
+</script>
 {% endblock %}

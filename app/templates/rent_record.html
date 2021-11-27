@@ -14,13 +14,13 @@
                             alt="...">
                     </a>
                 </div>
-                {% if record.book.end_date %}
+                {% if record.end_date %}
                 <div class="card-body">
                     <a href="{{ url_for('book.detail', book_id=record.book.id) }}">
                         <h5 class="card-title">{{ record.book.title }}</h5>
                     </a>
-                    <p class="card-text">대여시작: {{ record.start_date|datetime }}</p>
-                    <p class="card-text">대여 끝: {{ record.end_date|datetime }}</p>
+                    <p class="card-text">대여: {{ record.start_date|datetime }}</p>
+                    <p class="card-text">반납: {{ record.end_date|datetime }}</p>
                 </div>
                 <div class="card-footer d-flex justify-content-center">
                     <button type="button" class="btn btn-success text-light" disabled>반납완료</button>
@@ -30,10 +30,11 @@
                     <a href="{{ url_for('book.detail', book_id=record.book.id) }}">
                         <h5 class="card-title">{{ record.book.title }}</h5>
                     </a>
-                    <p class="card-text">대여시작: {{ record.start_date|datetime }}</p>
+                    <p class="card-text">대여: {{ record.start_date|datetime }}</p>
+                    <p class="card-text">반납: 대여중</p>
                 </div>
                 <div class="card-footer d-flex justify-content-center">
-                    <a href="{{ url_for('rent.return_book') }}" class="btn btn-primary btn-lg text-light"
+                    <a href="{{ url_for('rent.return_book') }}" class="btn btn-warning btn-lg text-light"
                         role="button">대여중</a>
                 </div>
                 {% endif %}
