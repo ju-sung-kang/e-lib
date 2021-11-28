@@ -1,11 +1,15 @@
 # 3기_도서관대출서비스_강주성
 
 ## 프로젝트 개요
-
+도서관 대출 서비스 프로젝트입니다.
 <br/>
 
 ## 실행방법
-
+1. 깃 레포 다운로드
+2. 가상환경 의존성 패키지 설치 (requirements.txt 이용)
+3. python migration.py
+4. python data_load.py
+5. python main.py
 <br/>
 
 ## 라이센스
