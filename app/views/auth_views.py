@@ -77,6 +77,11 @@ def signup():
             flash('이미 가입된 email입니다.', 'error')
             return render_template('sign_up.html')
 
+        user = User.query.filter_by(username=input_name).first()
+        if user:
+            flash('이미 존재하는 사용자명입니다.', 'error')
+            return render_template('sign_up.html')
+
         new_user = User(username=input_name, password=generate_password_hash(
             input_password1, method='sha256'), email=input_email)
         db.session.add(new_user)
